@@ -128,7 +128,7 @@ public class ArticleController extends BaseController {
      * @param ids
      * @return
      */
-    @PutMapping
+    @PutMapping("reply")
     public Response check(@RequestParam("type") String type, @RequestParam("replyMsg") String replyMsg,
                           @RequestParam("ids") String ids) {
         articleService.replyArticles(ids, type, replyMsg);
