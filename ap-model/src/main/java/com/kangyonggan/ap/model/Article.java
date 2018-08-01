@@ -33,6 +33,12 @@ public class Article {
     private String createdUsername;
 
     /**
+     * 创建人姓名
+     */
+    @Column(name = "created_name")
+    private String createdName;
+
+    /**
      * 申请状态
      */
     @Column(name = "apply_status")

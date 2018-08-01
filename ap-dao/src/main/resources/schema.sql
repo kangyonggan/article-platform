@@ -22,6 +22,8 @@ CREATE TABLE tb_article
   COMMENT '文章内容',
   created_username VARCHAR(32)                           NOT NULL                    DEFAULT ''
   COMMENT '创建人',
+  created_name     VARCHAR(32)                           NOT NULL                    DEFAULT ''
+  COMMENT '创建人姓名',
   apply_status     VARCHAR(32)                           NOT NULL                    DEFAULT ''
   COMMENT '申请状态',
   reply_msg        VARCHAR(64)                           NOT NULL                    DEFAULT ''
