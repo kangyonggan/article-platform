@@ -2,12 +2,11 @@ package com.kangyonggan.ap.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.kangyonggan.ap.constants.ApplyStatus;
+import com.kangyonggan.ap.model.Article;
 import com.kangyonggan.ap.service.ArticleService;
-import com.kangyonggan.app.util.MarkdownUtil;
 import com.kangyonggan.common.Params;
 import com.kangyonggan.common.Response;
 import com.kangyonggan.common.web.BaseController;
-import com.kangyonggan.ap.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +55,6 @@ public class ArticleController extends BaseController {
         Response response = Response.getSuccessResponse();
         Article article = articleService.findArticleById(id);
         if (article != null) {
-            article.setContent(MarkdownUtil.markdownToHtml(article.getContent()));
             Article prevArticle = articleService.findPrevArticle(id);
             Article nextArticle = articleService.findNextArticle(id);
 
