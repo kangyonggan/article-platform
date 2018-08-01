@@ -1,17 +1,13 @@
 package com.kangyonggan.ap.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.kangyonggan.ap.constants.ApplyStatus;
 import com.kangyonggan.ap.model.Article;
 import com.kangyonggan.ap.service.ArticleService;
 import com.kangyonggan.common.Params;
 import com.kangyonggan.common.Response;
 import com.kangyonggan.common.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,7 +31,6 @@ public class ArticleController extends BaseController {
     public Response list() {
         Response response = Response.getSuccessResponse();
         Params params = getRequestParams();
-        params.getQuery().put("applyStatus", ApplyStatus.COMPLETE.getCode());
 
         List<Article> articles = articleService.searchArticles(params);
         PageInfo pageInfo = new PageInfo<>(articles);
@@ -45,7 +40,19 @@ public class ArticleController extends BaseController {
     }
 
     /**
-     * 详情
+     * 保存文章
+     *
+     * @param article
+     * @return
+     */
+    @PostMapping
+    public Response save(Article article) {
+        articleService.saveArticle(article);
+        return Response.getSuccessResponse();
+    }
+
+    /**
+     * 文章详情
      *
      * @param id
      * @return
@@ -54,15 +61,78 @@ public class ArticleController extends BaseController {
     public Response detail(@PathVariable("id") Long id) {
         Response response = Response.getSuccessResponse();
         Article article = articleService.findArticleById(id);
-        if (article != null) {
-            Article prevArticle = articleService.findPrevArticle(id);
-            Article nextArticle = articleService.findNextArticle(id);
-
-            response.put("prevArticle", prevArticle);
-            response.put("nextArticle", nextArticle);
-        }
 
         response.put("article", article);
         return response;
     }
+
+    /**
+     * 下一篇文章
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "{id:[\\d]+}/next")
+    public Response next(@PathVariable("id") Long id) {
+        Response response = Response.getSuccessResponse();
+        Article article = articleService.findNextArticle(id);
+
+        response.put("article", article);
+        return response;
+    }
+
+    /**
+     * 上一篇文章
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "{id:[\\d]+}/prev")
+    public Response prev(@PathVariable("id") Long id) {
+        Response response = Response.getSuccessResponse();
+        Article article = articleService.findPrevArticle(id);
+
+        response.put("article", article);
+        return response;
+    }
+
+    /**
+     * 更新文章
+     *
+     * @param article
+     * @return
+     */
+    @PutMapping
+    public Response update(Article article) {
+        articleService.updateArticle(article);
+        return Response.getSuccessResponse();
+    }
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    public Response delete(@RequestParam("id") Long id) {
+        articleService.deleteArticle(id);
+        return Response.getSuccessResponse();
+    }
+
+    /**
+     * 文章审批
+     *
+     * @param type
+     * @param replyMsg
+     * @param ids
+     * @return
+     */
+    @PutMapping
+    public Response check(@RequestParam("type") String type, @RequestParam("replyMsg") String replyMsg,
+                          @RequestParam("ids") String ids) {
+        articleService.replyArticles(ids, type, replyMsg);
+        return Response.getSuccessResponse();
+    }
+
 }

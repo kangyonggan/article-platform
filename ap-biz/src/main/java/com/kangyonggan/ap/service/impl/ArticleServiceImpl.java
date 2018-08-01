@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
 
 
     @Override
+    @Log
     public Article findPrevArticle(Long id) {
         Example example = new Example(Article.class);
 
@@ -90,6 +92,7 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
     }
 
     @Override
+    @Log
     public Article findNextArticle(Long id) {
         Example example = new Example(Article.class);
 
@@ -105,4 +108,38 @@ public class ArticleServiceImpl extends BaseService<Article> implements ArticleS
 
         return articles.get(0);
     }
+
+    @Override
+    @Log
+    public void saveArticle(Article article) {
+        myMapper.insertSelective(article);
+    }
+
+    @Override
+    @Log
+    public void updateArticle(Article article) {
+        myMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    @Log
+    public void deleteArticle(Long id) {
+        myMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    @Log
+    public void replyArticles(String ids, String type, String replyMsg) {
+        Article article = new Article();
+        article.setReplyMsg(replyMsg);
+        article.setApplyStatus(type);
+
+        Example example = new Example(Article.class);
+        example.createCriteria().andEqualTo("applyStatus", ApplyStatus.APPLY.getCode())
+                .andIn("id", Arrays.asList(ids.split(",")));
+
+        myMapper.updateByExampleSelective(article, example);
+
+    }
+
 }

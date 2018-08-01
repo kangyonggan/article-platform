@@ -42,4 +42,34 @@ public interface ArticleService {
      * @return
      */
     Article findNextArticle(Long id);
+
+    /**
+     * 保存文章
+     *
+     * @param article
+     */
+    void saveArticle(Article article);
+
+    /**
+     * 更新文章
+     *
+     * @param article
+     */
+    void updateArticle(Article article);
+
+    /**
+     * 删除文章
+     *
+     * @param id
+     */
+    void deleteArticle(Long id);
+
+    /**
+     * 文章审批
+     *
+     * @param ids
+     * @param type
+     * @param replyMsg
+     */
+    void replyArticles(String ids, String type, String replyMsg);
 }
