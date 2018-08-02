@@ -26,16 +26,12 @@ public class ArticleController extends BaseController {
      *
      * @return
      */
-    @GetMapping
-    public Response list() {
-        Response response = Response.getSuccessResponse();
+    @GetMapping("list")
+    public PageInfo list() {
         Params params = getRequestParams();
 
         List<Article> articles = articleService.searchArticles(params);
-        PageInfo pageInfo = new PageInfo<>(articles);
-
-        response.put("pageInfo", pageInfo);
-        return response;
+        return new PageInfo<>(articles);
     }
 
     /**
@@ -56,13 +52,9 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "{id:[\\d]+}")
-    public Response detail(@PathVariable("id") Long id) {
-        Response response = Response.getSuccessResponse();
-        Article article = articleService.findArticleById(id);
-
-        response.put("article", article);
-        return response;
+    @GetMapping
+    public Article detail(@RequestParam("id") Long id) {
+        return articleService.findArticleById(id);
     }
 
     /**
@@ -71,13 +63,9 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "{id:[\\d]+}/next")
-    public Response next(@PathVariable("id") Long id) {
-        Response response = Response.getSuccessResponse();
-        Article article = articleService.findNextArticle(id);
-
-        response.put("article", article);
-        return response;
+    @GetMapping(value = "next")
+    public Article next(@RequestParam("id") Long id) {
+        return articleService.findNextArticle(id);
     }
 
     /**
@@ -86,13 +74,9 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "{id:[\\d]+}/prev")
-    public Response prev(@PathVariable("id") Long id) {
-        Response response = Response.getSuccessResponse();
-        Article article = articleService.findPrevArticle(id);
-
-        response.put("article", article);
-        return response;
+    @GetMapping(value = "prev")
+    public Article prev(@RequestParam("id") Long id) {
+        return articleService.findPrevArticle(id);
     }
 
     /**
