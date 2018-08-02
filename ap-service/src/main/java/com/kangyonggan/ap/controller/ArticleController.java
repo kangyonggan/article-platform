@@ -16,6 +16,7 @@ import java.util.List;
  * @since 8/1/18
  */
 @RestController
+@RequestMapping("article")
 public class ArticleController extends BaseController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ArticleController extends BaseController {
      *
      * @return
      */
-    @GetMapping("list")
+    @GetMapping
     public PageInfo list() {
         Params params = getRequestParams();
 
@@ -52,7 +53,7 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping
+    @GetMapping("detail")
     public Article detail(@RequestParam("id") Long id) {
         return articleService.findArticleById(id);
     }
