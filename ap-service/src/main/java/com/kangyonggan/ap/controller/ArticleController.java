@@ -16,7 +16,6 @@ import java.util.List;
  * @since 8/1/18
  */
 @RestController
-@RequestMapping("article")
 public class ArticleController extends BaseController {
 
     @Autowired
