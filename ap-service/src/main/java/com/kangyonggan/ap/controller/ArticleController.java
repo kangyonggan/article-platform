@@ -53,8 +53,8 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping("detail")
-    public Article detail(@RequestParam("id") Long id) {
+    @GetMapping("{id:[\\d]+}")
+    public Article detail(@PathVariable("id") Long id) {
         return articleService.findArticleById(id);
     }
 
@@ -64,8 +64,8 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "next")
-    public Article next(@RequestParam("id") Long id) {
+    @GetMapping(value = "{id:[\\d]+}/next")
+    public Article next(@PathVariable("id") Long id) {
         return articleService.findNextArticle(id);
     }
 
@@ -75,8 +75,8 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @GetMapping(value = "prev")
-    public Article prev(@RequestParam("id") Long id) {
+    @GetMapping(value = "{id:[\\d]+}/prev")
+    public Article prev(@PathVariable("id") Long id) {
         return articleService.findPrevArticle(id);
     }
 
@@ -98,8 +98,8 @@ public class ArticleController extends BaseController {
      * @param id
      * @return
      */
-    @DeleteMapping
-    public Response delete(@RequestParam("id") Long id) {
+    @DeleteMapping("{id:[\\d]+}")
+    public Response delete(@PathVariable("id") Long id) {
         articleService.deleteArticle(id);
         return Response.getSuccessResponse();
     }
